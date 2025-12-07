@@ -28,6 +28,8 @@ const importCSV = async () => {
       .on("data", (row) => {
         try {
           const record = {
+            customerId: row["Customer ID"] || null,   // ⭐ ADD THIS
+            transactionId: row["Transaction ID"] || null, // (optional, if exists)
             date: safeDate(row["Date"]),
             customerName: row["Customer Name"] || null,
             phoneNumber: row["Phone Number"] || null,
@@ -39,11 +41,17 @@ const importCSV = async () => {
             productName: row["Product Name"] || null,
             brand: row["Brand"] || null,
             tags: row["Tags"]
-              ? row["Tags"].replace(/"/g, "").split(",").map(t => t.trim())
+              ? row["Tags"].replace(/"/g, "").split(",").map((t) => t.trim())
               : [],
             quantity: safeNum(row["Quantity"]),
             pricePerUnit: safeNum(row["Price Per Unit"]),
-            discount: safeNum(row["Discount"]),
+            discount: safeNum(
+              row["Discount Percentage"] ||
+              row[" Discount Percentage"] ||
+              row["Discount Percentage "] ||
+              row["Discount"] ||
+              row["Disc %"] 
+            ),
             totalAmount: safeNum(row["Total Amount"]),
             finalAmount: safeNum(row["Final Amount"]),
             paymentMethod: row["Payment Method"] || null,

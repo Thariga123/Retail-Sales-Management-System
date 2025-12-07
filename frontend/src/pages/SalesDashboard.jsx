@@ -1,58 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import Topbar from "../components/layout/Topbar";
 import FiltersBar from "../components/layout/FiltersBar";
 import StatsBar from "../components/layout/StatsBar";
 import SalesTable from "../components/table/SalesTable";
 import Pagination from "../components/table/Pagination";
-import useFilters from "../hooks/useFilters";
-import { salesData } from "../services/salesData";
+import { getSales } from "../services/salesData";
 
 const SalesDashboard = () => {
-  const {
-    filters,
-    setFilter,
-    filteredData,
-    currentPage,
-    totalPages,
-    setPage,
-  } = useFilters(salesData, 10);
+  const [filters, setFilters] = useState({});
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(1);
+  };
+
+  const fetchData = async () => {
+    const response = await getSales({ ...filters, page });
+    setRows(response.rows); // <-- FIXED
+    setTotalPages(response.totalPages);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [filters, page]);
 
   return (
-    <div className="flex h-screen bg-[#f5efe0] text-slate-900">
+    <div className="flex h-screen bg-whitetext-slate-900">
       <Sidebar />
 
       <main className="flex flex-1 flex-col">
-        <Topbar />
+        <Topbar setFilter={(key, value) => setFilters(prev => ({ ...prev, [key]: value }))} />
 
         <section className="flex-1 overflow-y-auto px-8 pb-6 pt-3">
           <div className="mx-auto max-w-[1160px]">
-            {/* Title right under search, like Figma */}
-
-
-            {/* Beige block: filters + stats */}
-            <div className="rounded-t-[4px] border border-slate-200 border-b-0 bg-[#f7ebd6]">
+            <div className="rounded-t-[4px] border border-slate-200 border-b-0 bg-white">
               <div className="px-3 pt-3">
-                <FiltersBar filters={filters} setFilter={setFilter} />
+                <FiltersBar filters={filters} setFilter={handleFilterChange} />
               </div>
-
               <div className="px-3 pb-3 pt-2">
-                <StatsBar data={filteredData ?? []} />
+                <StatsBar data={rows} />
               </div>
             </div>
 
-            {/* White table block sharing same border */}
             <div className="overflow-hidden rounded-b-[4px] border border-slate-200 bg-white">
-              <SalesTable
-                rows={filteredData ?? []}
-                currentPage={currentPage}
-                perPage={10}
-              />
+              <SalesTable rows={rows} />
             </div>
 
             <div className="mt-3 flex justify-center">
               <Pagination
-                currentPage={currentPage}
+                currentPage={page}
                 totalPages={totalPages}
                 onChange={setPage}
               />

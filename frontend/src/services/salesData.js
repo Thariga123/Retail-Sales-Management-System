@@ -1,14 +1,30 @@
-// src/services/salesData.js
-export const salesData = Array.from({ length: 60 }, (_, idx) => ({
-  id: "1234567",
-  date: "2023-09-26",
-  customerId: "CUST12016",
-  customerName: "Neha Yadav",
-  phone: "+91 9123456789",
-  gender: "Female",
-  age: 25,
-  category: "Clothing",
-  quantity: 1,
-  amount: 899,
-  discount: 45,
+import API from "./api";
+
+export const getSales = async (filters) => {
+  const res = await API.get("/sales", { params: filters });
+
+  const rows = res.data.records.map((item) => ({
+  id: item._id,
+  customerId: item.customerId || "N/A",
+  date: item.date,
+  customerName: item.customerName,
+  phone: item.phoneNumber,
+  gender: item.gender,
+  age: item.age,
+  category: item.productCategory,
+  quantity: item.quantity,
+  region: item.customerRegion,
+  paymentMethod: item.paymentMethod,
+
+  // 🔥 Correct fields for StatsBar
+  amount: Number(item.finalAmount ?? item.totalAmount ?? 0),
+  discount: Number(item.discount ?? 0),
 }));
+
+
+  return {
+    rows,
+    total: res.data.total,
+    totalPages: res.data.totalPages,
+  };
+};

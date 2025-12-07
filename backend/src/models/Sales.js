@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const SalesSchema = new mongoose.Schema({
   customerName: String,
+  customerId: String,
   phoneNumber: String,
   customerRegion: String,
   gender: String,
@@ -9,11 +10,14 @@ const SalesSchema = new mongoose.Schema({
   productCategory: String,
   tags: [String],
   quantity: Number,
+  pricePerUnit: Number,
+  discount: Number,
+  totalAmount: Number,
+  finalAmount: Number,
   date: Date,
   paymentMethod: String,
 });
 
-// Recommended indexes
 SalesSchema.index({ customerName: 1 });
 SalesSchema.index({ phoneNumber: 1 });
 SalesSchema.index({ date: -1 });
