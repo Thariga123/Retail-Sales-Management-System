@@ -1,84 +1,96 @@
-1. Overview (3–5 lines)
+# 📌 Overview
 
-This project is a React-based Sales Management Dashboard featuring filters, search, sorting, pagination, and dynamic stats calculations.
-The UI replicates a Figma enterprise dashboard layout using Tailwind CSS.
-Data is displayed in a clean table with stat cards, dropdown filters, and a sidebar-based navigation system.
-The app is fully modular with reusable components and hooks.
+The frontend of the Retail Sales Management System is a React-based dashboard that displays sales records with real-time search, filtering, sorting, pagination, and summary analytics. The UI replicates a modern enterprise dashboard using Tailwind CSS and modular reusable components. It consumes backend APIs and renders data in a clean, interactive table layout.
 
-2. Tech Stack
+---
 
-React.js (Vite)
+# 🛠 Tech Stack
 
-Tailwind CSS
+* **React.js (Vite)**
+* **Tailwind CSS**
+* **JavaScript (ES6+)**
+* **Custom Hooks (useFilters)**
+* **Reusable UI Components (FiltersBar, StatsBar, SalesTable, Pagination)**
+* **REST API Integration**
 
-React Icons (optional for icons)
+---
 
-JavaScript
+# 🔍 Search Implementation Summary
 
-Custom Hooks (useFilters)
+Search is implemented in the top navigation bar.
+It filters data based on:
 
-Static JSON Dataset (salesData.js)
+* **Customer Name**
+* **Phone Number**
 
-3. Search Implementation Summary
+Search is case-insensitive and matches partial text. The search executes before pagination, ensuring accurate row counts and results.
 
-Search is located in the Topbar.
+---
 
-It filters rows based on name or phone, matching partial keywords.
+# 🎯 Filter Implementation Summary
 
-Search is case-insensitive and updates results instantly.
+Filters are managed through a centralized hook `useFilters()` and include:
 
-Runs before pagination so results are accurate.
+* Customer Region
+* Gender
+* Age Range
+* Product Category
+* Tags
+* Payment Method
+* Date Range
 
-4. Filter Implementation Summary
+Each filter updates the state via `setFilter()`, and results are recalculated instantly. Filters are applied cumulatively (AND logic).
 
-Filters include: Region, Gender, Age Range, Product Category, Tags, Payment Method, and Date.
+---
 
-Implemented using a custom hook useFilters() that stores all filter states.
+# ↕ Sorting Implementation Summary
 
-Each dropdown triggers setFilter(key, value) which recalculates the filtered dataset.
+Sorting is controlled via a dropdown and supports:
 
-Filtering is cumulative (multiple filters can be active together).
+* Customer Name (A–Z)
+* Customer Name (Z–A)
+* Date (Latest First)
 
-5. Sorting Implementation Summary
+Sorting is applied on the **filtered dataset**, ensuring consistent results.
 
-Sorting is applied using a dropdown (“Sort by: Customer Name A-Z”).
+---
 
-Sorting is executed on the filtered dataset, not the full dataset.
+# 📄 Pagination Implementation Summary
 
-Available sort options:
+Pagination uses:
 
-Customer Name (A-Z)
+* `currentPage` state
+* `rowsPerPage = 10`
+* Slicing logic based on page index
 
-Customer Name (Z-A)
+It recalculates after search, filters, and sorting.
+The UI displays clickable page numbers with active highlighting.
 
-Date (Latest first)
+---
 
-Sorting logic is part of useFilters().
+# ⚙️ Setup Instructions
 
-6. Pagination Implementation Summary
+1. Clone the repository
 
-Pagination is fully controlled by useFilters().
+2. Navigate to the frontend folder
 
-The dataset is sliced using:
+3. Install dependencies:
 
-const start = (currentPage - 1) * rowsPerPage;
-const visibleRows = filteredData.slice(start, start + rowsPerPage);
+   ```bash
+   npm install
+   ```
 
+4. Start the development server:
 
-Pagination updates after filters, search, and sorting.
+   ```bash
+   npm run dev
+   ```
 
-UI shows page numbers with highlighting for the active page.
+5. (Optional) Configure backend API base URL in environment or config file
 
-7. Setup Instructions
-# Clone the repository
-git clone <your-repo-url>
-cd <project-folder>
+6. Build for production:
 
-# Install dependencies
-npm install
+   ```bash
+   npm run build
+   ```
 
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
