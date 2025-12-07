@@ -1,16 +1,84 @@
-# React + Vite
+1. Overview (3–5 lines)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based Sales Management Dashboard featuring filters, search, sorting, pagination, and dynamic stats calculations.
+The UI replicates a Figma enterprise dashboard layout using Tailwind CSS.
+Data is displayed in a clean table with stat cards, dropdown filters, and a sidebar-based navigation system.
+The app is fully modular with reusable components and hooks.
 
-Currently, two official plugins are available:
+2. Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React.js (Vite)
 
-## React Compiler
+Tailwind CSS
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React Icons (optional for icons)
 
-## Expanding the ESLint configuration
+JavaScript
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Custom Hooks (useFilters)
+
+Static JSON Dataset (salesData.js)
+
+3. Search Implementation Summary
+
+Search is located in the Topbar.
+
+It filters rows based on name or phone, matching partial keywords.
+
+Search is case-insensitive and updates results instantly.
+
+Runs before pagination so results are accurate.
+
+4. Filter Implementation Summary
+
+Filters include: Region, Gender, Age Range, Product Category, Tags, Payment Method, and Date.
+
+Implemented using a custom hook useFilters() that stores all filter states.
+
+Each dropdown triggers setFilter(key, value) which recalculates the filtered dataset.
+
+Filtering is cumulative (multiple filters can be active together).
+
+5. Sorting Implementation Summary
+
+Sorting is applied using a dropdown (“Sort by: Customer Name A-Z”).
+
+Sorting is executed on the filtered dataset, not the full dataset.
+
+Available sort options:
+
+Customer Name (A-Z)
+
+Customer Name (Z-A)
+
+Date (Latest first)
+
+Sorting logic is part of useFilters().
+
+6. Pagination Implementation Summary
+
+Pagination is fully controlled by useFilters().
+
+The dataset is sliced using:
+
+const start = (currentPage - 1) * rowsPerPage;
+const visibleRows = filteredData.slice(start, start + rowsPerPage);
+
+
+Pagination updates after filters, search, and sorting.
+
+UI shows page numbers with highlighting for the active page.
+
+7. Setup Instructions
+# Clone the repository
+git clone <your-repo-url>
+cd <project-folder>
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
