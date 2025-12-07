@@ -165,6 +165,6 @@ http://localhost:5173
 ## 🎯 Final Result
 
 The system successfully enables:
-✔ Fast querying of 3500+ sales records
+✔ Fast querying of 100000+ sales records
 ✔ Efficient filter & sort without UI performance issues
 ✔ A professional dashboard with analytics and scalable API
