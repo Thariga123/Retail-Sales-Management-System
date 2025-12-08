@@ -18,6 +18,11 @@ const SalesDashboard = () => {
     setPage(1);
   };
 
+  const resetFilters = () => {
+    setFilters({});
+    setPage(1);
+  };
+
   const fetchData = async () => {
     const response = await getSales({ ...filters, page });
     setRows(response.rows); // <-- FIXED
@@ -39,7 +44,7 @@ const SalesDashboard = () => {
           <div className="mx-auto max-w-[1160px]">
             <div className="rounded-t-[4px] border border-slate-200 border-b-0 bg-white">
               <div className="px-3 pt-3">
-                <FiltersBar filters={filters} setFilter={handleFilterChange} />
+                <FiltersBar filters={filters} setFilter={handleFilterChange} resetFilters={resetFilters}/>
               </div>
               <div className="px-3 pb-3 pt-2">
                 <StatsBar data={rows} />

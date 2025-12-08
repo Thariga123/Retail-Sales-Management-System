@@ -3,7 +3,7 @@ import React from "react";
 const baseSelect =
   "h-8 rounded-[3px] bg-[#f8fafc] px-3 text-[12px] font-semibold text-slate-700 outline-none shadow-sm";
 
-const FiltersBar = ({ filters, setFilter }) => {
+const FiltersBar = ({ filters, setFilter, resetFilters }) => {
   const handleAge = (value) => {
     if (!value) return setFilter("ageMin", "") || setFilter("ageMax", "");
     const [min, max] = value.split("-");
@@ -28,14 +28,31 @@ const FiltersBar = ({ filters, setFilter }) => {
   };
 
   return (
-    <div className="mb-1 flex flex-wrap items-center gap-3 text-[11px] ">
-      <select className={baseSelect} onChange={(e) => setFilter("region", e.target.value)}>
-        <option value="">Customer Region</option>
-        <option value="North">North</option>
-        <option value="South">South</option>
-        <option value="East">East</option>
-        <option value="West">West</option>
-      </select>
+    <div className="mb-1 flex flex-wrap items-center gap-3 text-[11px]">
+      {/* Customer Region */}
+      <div className="flex items-center gap-2">
+
+        {/* 🔄 Refresh button */}
+        <button
+          onClick={resetFilters}
+          title="Reset filters"
+          className="flex items-center justify-center rounded-md border border-slate-300 bg-[#f8fafc] px-2 py-[6px] shadow-sm hover:bg-slate-100"
+        >
+          🔄
+        </button>
+
+        <select
+          className={baseSelect}
+          value={filters.region || ""}
+          onChange={(e) => setFilter("region", e.target.value)}
+        >
+          <option value="">Customer Region</option>
+          <option value="North">North</option>
+          <option value="South">South</option>
+          <option value="East">East</option>
+          <option value="West">West</option>
+        </select>
+      </div>
 
       <select className={baseSelect} onChange={(e) => setFilter("gender", e.target.value)}>
         <option value="">Gender</option>
