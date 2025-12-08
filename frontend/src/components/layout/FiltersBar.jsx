@@ -32,7 +32,7 @@ const FiltersBar = ({ filters, setFilter, resetFilters }) => {
       {/* Customer Region */}
       <div className="flex items-center gap-2">
 
-        {/* 🔄 Refresh button */}
+        {/* 🔄Refresh button */}
         <button
           onClick={resetFilters}
           title="Reset filters"
